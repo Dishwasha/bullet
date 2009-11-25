@@ -10,7 +10,7 @@ module Bullet
   autoload :Notification, 'bullet/notification'
 
   class <<self
-    attr_accessor :enable, :alert, :console, :growl, :growl_password, :rails_logger, :bullet_logger, :logger, :logger_file, :disable_browser_cache
+    attr_accessor :enable, :alert, :console, :growl, :growl_password, :growl_host, :rails_logger, :bullet_logger, :logger, :logger_file, :disable_browser_cache
 
     def enable=(enable)
       @enable = enable
@@ -31,7 +31,7 @@ module Bullet
       if growl
         begin
           require 'ruby-growl'
-          growl = Growl.new('localhost', 'ruby-growl', ['Bullet Notification'], nil, @growl_password)
+          growl = Growl.new(@growl_host || 'localhost', 'ruby-growl', ['Bullet Notification'], nil, @growl_password)
           growl.notify('Bullet Notification', 'Bullet Notification', 'Bullet Growl notifications have been turned on')
         rescue MissingSourceFile
           raise NotificationError.new('You must install the ruby-growl gem to use Growl notifications: `sudo gem install ruby-growl`')
